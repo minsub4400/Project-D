@@ -6,11 +6,26 @@ TagManager:
   tags:
   - CinemachineTarget
   - FollowCamera
+  - Slot
+  - Slots
+  - Hotbar
+  - EquipmentSystem
+  - Panel
+  - Tooltip
+  - DraggingItem
+  - ItemIcon
+  - Item
+  - CraftSystem
+  - ResultSlot
+  - Canvas
+  - EventSystem
+  - MainInventory
+  - Timer
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Character
   - Water
   - UI
   - 

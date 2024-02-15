@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -5,8 +6,8 @@ using UnityEngine.InputSystem;
 
 namespace StarterAssets
 {
-	public class StarterAssetsInputs : MonoBehaviour
-	{
+	public class StarterAssetsInputs : MonoBehaviourPunCallbacks
+    {
 		[Header("Character Input Values")]
 		public Vector2 move;
 		public Vector2 look;
@@ -43,6 +44,16 @@ namespace StarterAssets
 		{
 			SprintInput(value.isPressed);
 		}
+
+		public void OnInventory(InputValue value)
+		{
+			if (photonView.IsMine)
+			{
+				var players = GameManager.Instance._players;
+				players.GetComponent<PlayerInventory>().InventoryOnOff();
+			}
+		}
+
 #endif
 
 
@@ -73,7 +84,7 @@ namespace StarterAssets
 
 		private void SetCursorState(bool newState)
 		{
-			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+			//Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 		}
 	}
 	
