@@ -16,7 +16,7 @@ public class PickUpItem : MonoBehaviourPunCallbacks
             _inventory = _player.GetComponent<PlayerInventory>().inventory.GetComponent<Inventory>();
     }
 
-    /*void Update()
+    void Update()
     {
         if (_inventory != null && Input.GetKeyDown(KeyCode.E))
         {
@@ -37,6 +37,6 @@ public class PickUpItem : MonoBehaviourPunCallbacks
 
             }
         }
-    }*/
+    }
 
 }

@@ -39,14 +39,22 @@ public class DropItemManager : MonoBehaviourPun
         }
     }
 
-    public List<GameObject> _pickUpItemsList;
+    private GameObject _dropItemList;
+    public GameObject DropItemList
+    {
+        get => _dropItemList;
+        set
+        {
+            _dropItemList = value;
+        }
+    }
 
     public void AA()
     {
         if (PhotonNetwork.IsMasterClient == false)
         {
             var a = GameObject.Find("ItemOnTheGround(Clone)");
-            a.GetComponent<PickUpItem>().item = _pickUpItemsList[0].GetComponent<PickUpItem>().item;
+            a.GetComponent<PickUpItem>().item = _dropItemList.GetComponent<PickUpItem>().item;
         }
     }
 
