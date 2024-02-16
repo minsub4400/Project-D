@@ -606,9 +606,9 @@ public class DragItem : MonoBehaviourPun, IDragHandler, IPointerDownHandler, IEn
             else
             {
                 GameObject dropItem = (GameObject)PhotonNetwork.Instantiate(GetComponent<ItemOnObject>().item.itemModel.name, transform.position, transform.rotation);
+                dropItem.GetComponent<PickUpItem>().item = this.gameObject.GetComponent<ItemOnObject>().item;
                 DropItemManager.Instance.DropItemList = dropItem;
                 //dropItem.AddComponent<PickUpItem>();
-                dropItem.GetComponent<PickUpItem>().item = this.gameObject.GetComponent<ItemOnObject>().item;
                 dropItem.transform.localPosition = GameObject.FindGameObjectWithTag("Player").transform.localPosition;
                 inventory.OnUpdateItemList();
                 if (oldSlot.transform.parent.parent.GetComponent<EquipmentSystem>() != null)

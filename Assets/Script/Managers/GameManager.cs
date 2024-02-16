@@ -78,6 +78,17 @@ public class GameManager : MonoBehaviourPunCallbacks
                 Debug.Log("현재 방 이름 : " + PhotonNetwork.CurrentRoom.Name);
             }
         }
+
+        if (Input.GetKey(KeyCode.K))
+        {
+            if (DropItemManager.Instance.DropItemList != null)
+                Debug.Log(DropItemManager.Instance.DropItemList.name);
+        }
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        DropItemManager.Instance.AA();
     }
 
     private void PlayerSpawn()
@@ -97,8 +108,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         PlayerPutArr();
         PutInventory();
-
-        DropItemManager.Instance.AA();
     }
     private void PlayerPutArr()
     {

@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,6 +40,10 @@ public class DropItemManager : MonoBehaviourPun
         }
     }
 
+    //private List<GameObject> _dropItemSync = new List<GameObject>();
+    private List<int> _dropItemSync_Id = new List<int>();
+    private List<int> _dropItemSync_Count = new List<int>();
+
     private GameObject _dropItemList;
     public GameObject DropItemList
     {
@@ -46,21 +51,63 @@ public class DropItemManager : MonoBehaviourPun
         set
         {
             _dropItemList = value;
+            var id = _dropItemList.GetComponent<PickUpItem>().item.itemID;
+            var count = _dropItemList.GetComponent<PickUpItem>().item.itemValue;
+
+            var jsonConvert_id = JsonConvert.SerializeObject(id);
+            var jsonConvert_count = JsonConvert.SerializeObject(count);
+
+            photonView.RPC(nameof(SetDropItemList_ID), RpcTarget.All, jsonConvert_id);
+            photonView.RPC(nameof(SetDropItemList_Count), RpcTarget.All, jsonConvert_count);
+
+            /*var a = _dropItemList;
+            var s = JsonUtility.ToJson(_dropItemList);
+            photonView.RPC(nameof(DropItemSync), RpcTarget.All, s);*/
         }
     }
 
-    public void AA()
+
+    [PunRPC]
+    public void SetDropItemList_ID(string value)
     {
-        if (PhotonNetwork.IsMasterClient == false)
-        {
-            var a = GameObject.Find("ItemOnTheGround(Clone)");
-            a.GetComponent<PickUpItem>().item = _dropItemList.GetComponent<PickUpItem>().item;
-        }
+        /*var jsonConvert_id = JsonConvert.DeserializeObject<int>(value);
+        var gameobj = (GameObject)jsonConvert;
+        _dropItemList = gameobj;*/
     }
 
     [PunRPC]
-    private void DropItemData()
+    public void SetDropItemList_Count(string value)
     {
-
+        /*var jsonConvert = JsonConvert.DeserializeObject<object>(obj);
+        var gameobj = (GameObject)jsonConvert;
+        _dropItemList = gameobj;*/
     }
+
+
+
+
+    [PunRPC]
+    public void DropItemSync(string s)
+    {
+        /*ItemDataBaseList itemDataBaseList = new ItemDataBaseList();
+        _dropItemList = itemDataBaseList.getItemByID(int.Parse(s));
+        var g = JsonConvert.DeserializeObject<int>(s);
+        _dropItemSync.Add(g);*/
+    }
+
+    
+    public void AA()
+    {
+        photonView.RPC(nameof(BB), RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void BB()
+    {
+        if (PhotonNetwork.IsMasterClient == false)
+        {
+            
+        }
+    }
+
 }
