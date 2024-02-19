@@ -21,6 +21,7 @@ TagManager:
   - EventSystem
   - MainInventory
   - Timer
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -28,7 +29,7 @@ TagManager:
   - Character
   - Water
   - UI
-  - 
+  - Enemy
   - 
   - 
   - 

@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using StarterAssets;
 
 public class PlayerInventory : MonoBehaviour
 {

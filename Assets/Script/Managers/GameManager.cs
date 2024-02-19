@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -46,6 +47,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     [SerializeField]
     private GameObject _craft;
+
+    [SerializeField]
+    private Slider _slider;
 
     [Header("플레이어")]
     public GameObject _players;
@@ -108,71 +112,24 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         PlayerPutArr();
         PutInventory();
+        PutHealthSlider();
     }
     private void PlayerPutArr()
     {
         var players = GameObject.FindGameObjectWithTag("Player");
         _players = players;
-        /*if (players.Length > 1)
-        {
-            BubbleSort(players);
-        }
-        else
-        {
-            _players = players;
-        }*/
     }
-
-    /*public void BubbleSort(GameObject[] arr)
-    {
-        int n = arr.Length;
-        for (int i = 0; i < n - 1; i++)
-        {
-            for (int j = 0; j < n - i - 1; j++)
-            {
-                if (arr[j].GetComponent<PhotonView>().ViewID > arr[j + 1].GetComponent<PhotonView>().ViewID)
-                {
-                    // 인접한 요소를 교환
-                    GameObject temp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = temp;
-                }
-            }
-        }
-
-        _players = arr;
-    }*/
     private void PutInventory()
     {
         var p = _players.GetComponent<PlayerInventory>();
         p.inventory = _inventory;
         p.characterSystem = _equipment;
         p.craftSystem = _craft;
-        /*foreach (var player in _players)
-        {
-            var p = player.GetComponent<PlayerInventory>();
-
-            if (photonView.IsMine)
-            {
-                if (p.inventory != null)
-                {
-                    continue;
-                }
-                p.inventory = _inventory;
-                p.characterSystem = _equipment;
-                p.craftSystem = _craft;
-            }
-            else
-            {
-                if (p.inventory != null)
-                {
-                    continue;
-                }
-                p.inventory = _inventory;
-                p.characterSystem = _equipment;
-                p.craftSystem = _craft;
-            }
-        }*/
+    }
+    private void PutHealthSlider()
+    {
+        var p = _players.GetComponent<PlayerHealth>();
+        p.healthSlider = _slider;
     }
 
 }

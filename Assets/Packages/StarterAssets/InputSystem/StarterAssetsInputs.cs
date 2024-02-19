@@ -21,6 +21,9 @@ namespace StarterAssets
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
 
+		[Header("PickUpItemInfo")]
+		public PickUpItem _pickUpItem = null;
+
 #if ENABLE_INPUT_SYSTEM
 		public void OnMove(InputValue value)
 		{
@@ -53,6 +56,13 @@ namespace StarterAssets
 				players.GetComponent<PlayerInventory>().InventoryOnOff();
 			}
 		}
+
+		public void OnParming(InputValue value)
+		{
+			if (_pickUpItem != null)
+				_pickUpItem.DropItemParming();
+
+        }
 
 #endif
 

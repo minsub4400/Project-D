@@ -44,6 +44,13 @@ MonoBehaviour:
   - DropItemData
   - DropItemSync
   - BB
+  - SetDropItemList
+  - SetDropItemList_Count
+  - SetDropItemList_ID
+  - Setup
+  - ApplyUpdatedHealth
+  - OnDamage
+  - RestoreHealth
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

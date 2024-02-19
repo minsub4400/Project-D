@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Photon.Pun;
+using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

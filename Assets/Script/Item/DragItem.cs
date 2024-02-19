@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Photon.Pun;
+using StarterAssets;
 
 public class DragItem : MonoBehaviourPun, IDragHandler, IPointerDownHandler, IEndDragHandler
 {
