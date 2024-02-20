@@ -28,15 +28,17 @@ public class PlayerHealth : LivingEntity {
         // LivingEntity의 OnEnable() 실행 (상태 초기화)
         base.OnEnable();
 
-        // 체력 슬라이더 활성화
+        // 플레이어 조작을 받는 컴포넌트들 활성화
+        playerMovement.Dead = false;
+    }
+
+    public void HealthSliderInit()
+    {
         healthSlider.gameObject.SetActive(true);
         // 체력 슬라이더의 최대값을 기본 체력값으로 변경
         healthSlider.maxValue = startingHealth;
         // 체력 슬라이더의 값을 현재 체력값으로 변경
         healthSlider.value = health;
-
-        // 플레이어 조작을 받는 컴포넌트들 활성화
-        playerMovement.Dead = false;
     }
 
     // 체력 회복
@@ -48,11 +50,10 @@ public class PlayerHealth : LivingEntity {
         healthSlider.value = health;
     }
 
-
     // 데미지 처리
     [PunRPC]
-    public override void OnDamage(float damage, Vector3 hitPoint,
-        Vector3 hitDirection) {
+    public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitDirection) 
+    {
         if (!dead)
         {
             // 사망하지 않은 경우에만 효과음을 재생
@@ -61,6 +62,7 @@ public class PlayerHealth : LivingEntity {
 
         // LivingEntity의 OnDamage() 실행(데미지 적용)
         base.OnDamage(damage, hitPoint, hitDirection);
+
         // 갱신된 체력을 체력 슬라이더에 반영
         healthSlider.value = health;
     }

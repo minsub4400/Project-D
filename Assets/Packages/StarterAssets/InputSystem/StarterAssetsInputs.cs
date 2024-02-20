@@ -2,6 +2,7 @@ using Photon.Pun;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
+using static UnityEngine.Rendering.DebugUI;
 #endif
 
 namespace StarterAssets
@@ -13,6 +14,7 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
+		public bool attack;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -24,8 +26,11 @@ namespace StarterAssets
 		[Header("PickUpItemInfo")]
 		public PickUpItem _pickUpItem = null;
 
+		[Header("ThirdPersonController")]
+		public ThirdPersonController thirdPersonController;
+
 #if ENABLE_INPUT_SYSTEM
-		public void OnMove(InputValue value)
+        public void OnMove(InputValue value)
 		{
 			MoveInput(value.Get<Vector2>());
 		}
@@ -46,7 +51,11 @@ namespace StarterAssets
 		public void OnSprint(InputValue value)
 		{
 			SprintInput(value.isPressed);
-		}
+        }
+        public void OnAttack(InputValue value)
+		{
+            AttackInput(value.isPressed);
+        }
 
 		public void OnInventory(InputValue value)
 		{
@@ -87,7 +96,13 @@ namespace StarterAssets
 			sprint = newSprintState;
 		}
 
-		private void OnApplicationFocus(bool hasFocus)
+        public void AttackInput(bool newAttackState)
+        {
+            attack = newAttackState;
+			//StartCoroutine(thirdPersonController.Attack());
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
 		{
 			SetCursorState(cursorLocked);
 		}

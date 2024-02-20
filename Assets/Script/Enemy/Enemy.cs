@@ -18,10 +18,15 @@ public class Enemy : LivingEntity {
     private AudioSource enemyAudioPlayer; // 오디오 소스 컴포넌트
     private Renderer enemyRenderer; // 렌더러 컴포넌트
 
-    public float damage = 20f; // 공격력
+    public float damage = 0f; // 공격력
     public float timeBetAttack = 0.5f; // 공격 간격
     private float lastAttackTime; // 마지막 공격 시점
+    public float enemyHp = 100;
 
+    [SerializeField]
+    private Collider attackCollider;
+
+    private bool deadCheck = true;
 
     // 추적할 대상이 존재하는지 알려주는 프로퍼티
     private bool hasTarget
@@ -84,8 +89,16 @@ public class Enemy : LivingEntity {
             return;
         }
 
-        // 추적 대상의 존재 여부에 따라 다른 애니메이션을 재생
-        enemyAnimator.SetBool("HasTarget", hasTarget);
+        if (targetEntity != null && deadCheck)
+            transform.LookAt(targetEntity.transform);
+
+
+
+        /*if (enemyHp <= 0 && deadCheck)
+        {
+            deadCheck = false;
+            Die();
+        }*/
     }
 
     // 주기적으로 추적할 대상의 위치를 찾아 경로를 갱신
@@ -97,12 +110,23 @@ public class Enemy : LivingEntity {
             {
                 // 추적 대상 존재 : 경로를 갱신하고 AI 이동을 계속 진행
                 pathFinder.isStopped = false;
-                pathFinder.SetDestination(targetEntity.transform.position);
+                if (Vector3.Distance(transform.position, targetEntity.transform.position) > 2f)
+                {
+                    enemyAnimator.SetBool("HasTarget", true);
+                    pathFinder.SetDestination(targetEntity.transform.position);
+                }
+                else
+                {
+                    pathFinder.isStopped = true;
+                    enemyAnimator.SetBool("HasTarget", false);
+                    //Attack();
+                }
             }
             else
             {
                 // 추적 대상 없음 : AI 이동 중지
                 pathFinder.isStopped = true;
+                enemyAnimator.SetBool("HasTarget", false);
 
                 // 20 유닛의 반지름을 가진 가상의 구를 그렸을때, 구와 겹치는 모든 콜라이더를 가져옴
                 // 단, targetLayers에 해당하는 레이어를 가진 콜라이더만 가져오도록 필터링
@@ -132,12 +156,21 @@ public class Enemy : LivingEntity {
         }
     }
 
+    private void Attack()
+    {
+        attackCollider.enabled = true;
+        //transform.LookAt(targetEntity.transform);
+        enemyAnimator.SetTrigger("Attack");
+        /*var animHash = Animator.StringToHash("Attack");
+        enemyAnimator.Play(animHash);*/
+
+    }
 
     // 데미지를 입었을때 실행할 처리
     [PunRPC]
     public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal) {
         // 아직 사망하지 않은 경우에만 피격 효과 재생
-        if (!dead)
+        /*if (!dead)
         {
             // 공격 받은 지점과 방향으로 파티클 효과를 재생
             hitEffect.transform.position = hitPoint;
@@ -146,7 +179,7 @@ public class Enemy : LivingEntity {
 
             // 피격 효과음 재생
             enemyAudioPlayer.PlayOneShot(hitSound);
-        }
+        }*/
 
         // LivingEntity의 OnDamage()를 실행하여 데미지 적용
         base.OnDamage(damage, hitPoint, hitNormal);
@@ -173,22 +206,32 @@ public class Enemy : LivingEntity {
 
         // 사망 효과음 재생
         enemyAudioPlayer.PlayOneShot(deathSound);
+
+        // 래그돌 처리
+        gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        gameObject.transform.GetChild(1).gameObject.SetActive(true);
     }
 
-    private void OnTriggerStay(Collider other) {
+    private void OnTriggerEnter(Collider other)
+    {
         // 호스트가 아니라면 공격 실행 불가
         if (!PhotonNetwork.IsMasterClient)
         {
             return;
         }
 
+        /*if (attackCollider.enabled == false)
+        {
+            return;
+        }*/
+
         // 자신이 사망하지 않았으며,
         // 최근 공격 시점에서 timeBetAttack 이상 시간이 지났다면 공격 가능
         if (!dead && Time.time >= lastAttackTime + timeBetAttack)
         {
             // 상대방으로부터 LivingEntity 타입을 가져오기 시도
-            LivingEntity attackTarget
-                = other.GetComponent<LivingEntity>();
+            // LivingEntity attackTarget = other.GetComponent<LivingEntity>();
+            LivingEntity attackTarget = other.GetComponent<LivingEntity>();
 
             // 상대방의 LivingEntity가 자신의 추적 대상이라면 공격 실행
             if (attackTarget != null && attackTarget == targetEntity)
@@ -201,7 +244,8 @@ public class Enemy : LivingEntity {
                 Vector3 hitNormal = transform.position - other.transform.position;
 
                 // 공격 실행
-                attackTarget.OnDamage(damage, hitPoint, hitNormal);
+                var playerHealth = attackTarget.gameObject.GetComponent<PlayerHealth>();
+                playerHealth.OnDamage(damage, hitPoint, hitNormal);
             }
         }
     }

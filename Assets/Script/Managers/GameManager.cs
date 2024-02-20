@@ -130,6 +130,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         var p = _players.GetComponent<PlayerHealth>();
         p.healthSlider = _slider;
+        p.HealthSliderInit();
     }
 
 }

@@ -1,4 +1,6 @@
-﻿ using UnityEngine;
+﻿using Photon.Pun;
+using System.Collections;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
@@ -78,6 +80,10 @@ namespace StarterAssets
         [Tooltip("For locking the camera position on all axis")]
         public bool LockCameraPosition = false;
 
+        public float damage = 20f; // 공격력
+        public float timeBetAttack = 0.5f; // 공격 간격
+        private float lastAttackTime; // 마지막 공격 시점
+
         // cinemachine
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
@@ -100,6 +106,7 @@ namespace StarterAssets
         private int _animIDJump;
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
+        private int _animIDAttack;
 
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
@@ -109,6 +116,8 @@ namespace StarterAssets
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
 
+        [SerializeField]
+        private PlayerShooter _playerShooter;
         private const float _threshold = 0.01f;
 
         private bool _hasAnimator;
@@ -164,6 +173,29 @@ namespace StarterAssets
                 JumpAndGravity();
                 GroundedCheck();
                 Move();
+                Attack();
+            }
+        }
+
+        public void Attack()
+        {
+            if (_input.attack) // 공격 입력이 들어왔다면
+            {
+                if (_hasAnimator)
+                {
+                    Debug.Log("공격!");
+                    _playerShooter.gun.Fire();
+                    _animator.SetBool(_animIDAttack, _input.attack);
+                    _input.attack = false;   
+                }
+            }
+            else
+            {
+                if (_animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")
+                        && _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+                {
+                    _animator.SetBool(_animIDAttack, false);
+                }
             }
         }
 
@@ -179,6 +211,7 @@ namespace StarterAssets
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+            _animIDAttack = Animator.StringToHash("Attack");
         }
 
         private void GroundedCheck()
@@ -393,6 +426,6 @@ namespace StarterAssets
             {
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
             }
-        }
+        }        
     }
 }
