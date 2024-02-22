@@ -151,7 +151,7 @@ public class Gun : MonoBehaviourPun, IPunObservable {
         }
 
         // 발사 이펙트 재생, 이펙트 재생은 모든 클라이언트들에서 실행
-        photonView.RPC("ShotEffectProcessOnClients", RpcTarget.All, hitPosition);
+        // photonView.RPC("ShotEffectProcessOnClients", RpcTarget.All, hitPosition);
     }
 
     // 이펙트 재생 코루틴을 랩핑하는 메서드

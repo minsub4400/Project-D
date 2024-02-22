@@ -2291,6 +2291,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1551887841328277419, guid: 8606e2a5d8a2aa94ca4a1d1e9347daa8, type: 3}
+      propertyPath: sceneViewId
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3893294197879345259, guid: 8606e2a5d8a2aa94ca4a1d1e9347daa8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 15.53
@@ -2405,7 +2409,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -2.4999847, y: 0}
+  m_AnchoredPosition: {x: -2.5, y: 0}
   m_SizeDelta: {x: -5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &722584206
@@ -3212,7 +3216,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: 2.0749817, y: 0}
+  m_AnchoredPosition: {x: 2.0749512, y: 0}
   m_SizeDelta: {x: 4.150044, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1861524384 stripped

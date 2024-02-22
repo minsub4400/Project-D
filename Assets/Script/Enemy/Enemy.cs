@@ -90,7 +90,9 @@ public class Enemy : LivingEntity {
         }
 
         if (targetEntity != null && deadCheck)
+        {
             transform.LookAt(targetEntity.transform);
+        }
 
 
 
@@ -119,7 +121,7 @@ public class Enemy : LivingEntity {
                 {
                     pathFinder.isStopped = true;
                     enemyAnimator.SetBool("HasTarget", false);
-                    //Attack();
+                    Attack();
                 }
             }
             else
@@ -189,7 +191,7 @@ public class Enemy : LivingEntity {
     public override void Die() {
         // LivingEntity의 Die()를 실행하여 기본 사망 처리 실행
         base.Die();
-
+        deadCheck = false;
         // 다른 AI들을 방해하지 않도록 자신의 모든 콜라이더들을 비활성화
         Collider[] enemyColliders = GetComponents<Collider>();
         for (int i = 0; i < enemyColliders.Length; i++)
@@ -220,10 +222,10 @@ public class Enemy : LivingEntity {
             return;
         }
 
-        /*if (attackCollider.enabled == false)
+        if (attackCollider.enabled == false)
         {
             return;
-        }*/
+        }
 
         // 자신이 사망하지 않았으며,
         // 최근 공격 시점에서 timeBetAttack 이상 시간이 지났다면 공격 가능

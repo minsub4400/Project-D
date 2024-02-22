@@ -48,8 +48,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject _craft;
 
-    [SerializeField]
-    private Slider _slider;
+    public Slider _slider;
 
     [Header("플레이어")]
     public GameObject _players;

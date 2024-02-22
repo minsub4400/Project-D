@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.UI; // UI 관련 코드
@@ -63,8 +64,18 @@ public class PlayerHealth : LivingEntity {
         // LivingEntity의 OnDamage() 실행(데미지 적용)
         base.OnDamage(damage, hitPoint, hitDirection);
 
-        // 갱신된 체력을 체력 슬라이더에 반영
-        healthSlider.value = health;
+        if (healthSlider == null)
+        {
+            var p = GameManager.Instance._players.GetComponent<PlayerHealth>();
+            p.healthSlider = GameManager.Instance._slider;
+            p.HealthSliderInit();
+        }
+        else
+        {
+            // 갱신된 체력을 체력 슬라이더에 반영
+            healthSlider.value = health;
+        }
+
     }
 
     public override void Die() {
